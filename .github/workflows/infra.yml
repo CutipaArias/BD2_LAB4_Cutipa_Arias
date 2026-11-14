@@ -27,5 +27,22 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
       - run: terraform init
       - run: terraform validate
+      - name: Verificar secrets requeridos
+        env:
+          S_ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          S_ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          S_ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          S_ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          S_GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+          S_NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+        working-directory: .
+        run: |
+          faltan=""
+          for v in ${!S_@}; do if [ -z "${!v}" ]; then faltan="$faltan ${v#S_}"; fi; done
+          if [ -n "$faltan" ]; then
+            echo "::error title=Faltan secrets de despliegue::Configure en Settings > Secrets and variables > Actions:$faltan. Se obtienen al crear la suscripcion de Azure (ver PENDIENTES)."
+            exit 1
+          fi
+          echo "Secrets configurados"
       - run: terraform plan -out=tfplan
       - run: terraform apply -auto-approve tfplan

@@ -10,6 +10,18 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Verificar secrets requeridos
+        env:
+          S_AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+          S_WEBAPP_NAME: ${{ vars.WEBAPP_NAME }}
+        run: |
+          faltan=""
+          for v in ${!S_@}; do if [ -z "${!v}" ]; then faltan="$faltan ${v#S_}"; fi; done
+          if [ -n "$faltan" ]; then
+            echo "::error title=Faltan secrets de despliegue::Configure en Settings > Secrets and variables > Actions:$faltan. Se obtienen al crear la suscripcion de Azure (ver PENDIENTES)."
+            exit 1
+          fi
+          echo "Secrets configurados"
       - name: Nombre de imagen en minusculas
         run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
       - uses: azure/login@v2

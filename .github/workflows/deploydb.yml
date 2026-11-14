@@ -6,6 +6,18 @@ jobs:
   load-data:
     runs-on: ubuntu-latest
     steps:
+      - name: Verificar secrets requeridos
+        env:
+          S_NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+          S_NEO4J_URI: ${{ secrets.NEO4J_URI }}
+        run: |
+          faltan=""
+          for v in ${!S_@}; do if [ -z "${!v}" ]; then faltan="$faltan ${v#S_}"; fi; done
+          if [ -n "$faltan" ]; then
+            echo "::error title=Faltan secrets de despliegue::Configure en Settings > Secrets and variables > Actions:$faltan. Se obtienen al crear la suscripcion de Azure (ver PENDIENTES)."
+            exit 1
+          fi
+          echo "Secrets configurados"
       - uses: actions/checkout@v4
       - name: Cargar movies.cypher en Neo4j
         env:
