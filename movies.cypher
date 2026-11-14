@@ -17,7 +17,7 @@ CREATE
   (Emil)-[:ACTED_IN {roles:['Emil']}]->(TheMatrix),
   (LillyW)-[:DIRECTED]->(TheMatrix),
   (LanaW)-[:DIRECTED]->(TheMatrix),
-  (JoelS)-[:PRODUCED]->(TheMatrix);
+  (JoelS)-[:PRODUCED]->(TheMatrix)
 
 CREATE (TheMatrixReloaded:Movie {title:'The Matrix Reloaded', released:2003, tagline:'Free your mind'})
 CREATE
@@ -27,7 +27,7 @@ CREATE
   (Hugo)-[:ACTED_IN {roles:['Agent Smith']}]->(TheMatrixReloaded),
   (LillyW)-[:DIRECTED]->(TheMatrixReloaded),
   (LanaW)-[:DIRECTED]->(TheMatrixReloaded),
-  (JoelS)-[:PRODUCED]->(TheMatrixReloaded);
+  (JoelS)-[:PRODUCED]->(TheMatrixReloaded)
 
 CREATE (TheMatrixRevolutions:Movie {title:'The Matrix Revolutions', released:2003, tagline:'Everything that has a beginning has an end'})
 CREATE
@@ -37,7 +37,7 @@ CREATE
   (Hugo)-[:ACTED_IN {roles:['Agent Smith']}]->(TheMatrixRevolutions),
   (LillyW)-[:DIRECTED]->(TheMatrixRevolutions),
   (LanaW)-[:DIRECTED]->(TheMatrixRevolutions),
-  (JoelS)-[:PRODUCED]->(TheMatrixRevolutions);
+  (JoelS)-[:PRODUCED]->(TheMatrixRevolutions)
 
 CREATE (TomH:Person {name:'Tom Hanks', born:1956})
 CREATE (MegR:Person {name:'Meg Ryan', born:1961})

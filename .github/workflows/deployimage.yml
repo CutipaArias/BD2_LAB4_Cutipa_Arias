@@ -10,10 +10,12 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Nombre de imagen en minusculas
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
       - uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ vars.WEBAPP_NAME }}
-          images: ghcr.io/${{ github.repository }}:latest
+          images: ${{ env.IMAGE }}:latest

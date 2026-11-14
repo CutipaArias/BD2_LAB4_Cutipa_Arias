@@ -11,8 +11,7 @@ env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
   TF_VAR_neo4j_password: ${{ secrets.NEO4J_PASSWORD }}
-  TF_VAR_image_name: ghcr.io/${{ github.repository }}
-  TF_VAR_registry_username: ${{ github.repository_owner }}
+  TF_VAR_registry_username: ${{ github.actor }}
   TF_VAR_registry_password: ${{ secrets.GHCR_TOKEN }}
 
 jobs:
@@ -23,6 +22,8 @@ jobs:
         working-directory: infra
     steps:
       - uses: actions/checkout@v4
+      - name: Nombre de imagen en minusculas
+        run: echo "TF_VAR_image_name=${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
       - uses: hashicorp/setup-terraform@v3
       - run: terraform init
       - run: terraform validate
